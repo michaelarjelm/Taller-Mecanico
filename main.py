@@ -1,8 +1,10 @@
-from vehiculo import Vehiculo # Importa la clase Vehiculo desde el archivo local vehiculo.py
+from auto import Auto # Importa la clase Auto desde el archivo local auto.py
+from moto import Moto # Importa la clase Moto desde el archivo local moto.py
+from camion import Camion # Importa la clase Camion desde el archivo local camion.py
 
-vehiculo1 = Vehiculo("AB1234", 2018) # Instancia el primer objeto Vehiculo pasándole su patente y año
-vehiculo2 = Vehiculo("CD5678", 2020) # Instancia el segundo objeto Vehiculo pasándole su patente y año
-vehiculo3 = Vehiculo("EF9012", 2023) # Instancia el tercer objeto Vehiculo pasándole su patente y año
+vehiculo1 = Auto("AB1234", 2018, 200) # Instancia un objeto Auto pasándole su patente y año
+vehiculo2 = Moto("CD5678", 2020) # Instancia un objeto Moto pasándole su patente y año
+vehiculo3 = Camion("EF9012", 2023, 5000) # Instancia un objeto Camion pasándole su patente y año
 
 print(vehiculo1.ingresar()) # Ejecuta ingresar() del primer vehículo y muestra el texto retornado en consola
 print(vehiculo2.ingresar()) # Ejecuta ingresar() del segundo vehículo y muestra el texto retornado en consola
