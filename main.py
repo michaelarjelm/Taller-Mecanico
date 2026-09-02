@@ -1,13 +1,16 @@
-from vehiculo import Vehiculo # Importa la clase Vehiculo desde el archivo local vehiculo.py
+﻿from auto import Auto # Importa la clase Auto desde auto.py
+from moto import Moto # Importa la clase Moto desde moto.py
+from camion import Camion # Importa la clase Camion desde camion.py
 
-vehiculo1 = Vehiculo("AB1234", 2018) # Instancia el primer objeto Vehiculo pasándole su patente y año
-vehiculo2 = Vehiculo("CD5678", 2020) # Instancia el segundo objeto Vehiculo pasándole su patente y año
-vehiculo3 = Vehiculo("EF9012", 2023) # Instancia el tercer objeto Vehiculo pasándole su patente y año
+camion1 = Camion("AA111AA", 2021, 8000) # Instancia el primer camión con 8000 kg de capacidad
+camion2 = Camion("BB222BB", 2023, 12000) # Instancia el segundo camión con 12000 kg de capacidad
 
-print(vehiculo1.ingresar()) # Ejecuta ingresar() del primer vehículo y muestra el texto retornado en consola
-print(vehiculo2.ingresar()) # Ejecuta ingresar() del segundo vehículo y muestra el texto retornado en consola
-print(vehiculo3.ingresar()) # Ejecuta ingresar() del tercer vehículo y muestra el texto retornado en consola
+print(camion1.ingresar()) # Registra el ingreso del primer camión
+print(camion2.ingresar()) # Registra el ingreso del segundo camión
 
-print(f"Tarifa por hora del primer vehículo: ${vehiculo1.tarifa_hora()}") # Concatena e imprime la tarifa retornada por el primer vehículo
-print(f"Tarifa por hora del segundo vehículo: ${vehiculo2.tarifa_hora()}") # Concatena e imprime la tarifa retornada por el segundo vehículo
-print(f"Tarifa por hora del tercer vehículo: ${vehiculo3.tarifa_hora()}") # Concatena e imprime la tarifa retornada por el tercer vehículo
+if camion1.get_capacidad_carga() > camion2.get_capacidad_carga(): # Compara cuál de los dos camiones tiene mayor capacidad de carga
+    print(f"El camión 1 tiene mayor capacidad de carga ({camion1.get_capacidad_carga()} kg).") # Imprime si el primer camión carga más
+elif camion2.get_capacidad_carga() > camion1.get_capacidad_carga(): # Evalúa si el segundo camión tiene mayor capacidad
+    print(f"El camión 2 tiene mayor capacidad de carga ({camion2.get_capacidad_carga()} kg).") # Imprime si el segundo camión carga más
+else: # En caso de que ambos tengan la misma capacidad
+    print("Ambos camiones tienen la misma capacidad de carga.") # Imprime que las capacidades son iguales
