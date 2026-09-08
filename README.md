@@ -2,8 +2,9 @@
 
 Repositorio para la asignatura de Programación Orientada a Objetos Seguro.
 
-**Profesor:** Michael Arjel
-**Institución:** Inacap
+**Profesor:** Michael Arjel  
+**Institución:** Inacap  
+**Alumno:** Marcos Montenegro
 
 ---
 
@@ -33,3 +34,16 @@ Repositorio para la asignatura de Programación Orientada a Objetos Seguro.
   - Se importaron las subclases `Auto`, `Moto` y `Camion`.
   - Se instanciaron objetos de cada una de las clases hijas y se verificó la invocación de métodos heredados (`ingresar()` y `tarifa_hora()`).
 - **Documentación:** Código comentado línea por línea con fines pedagógicos.
+
+### 8 de Septiembre de 2026
+- **Reconfiguración de Repositorios Git:**
+  - Configuración de `upstream` apuntando al repositorio del profesor (`michaelarjelm`) y `origin` al repositorio personal (`Marcos-Montenegro2026`).
+- **Clases y Métodos Abstractos (`vehiculo.py`):**
+  - Transformación de `Vehiculo` en una clase abstracta (`ABC`).
+  - Definición del método abstracto `@abstractmethod def tarifa_hora(self) -> int:`.
+- **Reforzamiento de Seguridad y Encapsulamiento:**
+  - Implementación de propiedades `@property` y setters con validaciones estrictas de tipos (`isinstance`), rango de años (1900 a año actual + 1), formato de patentes (mínimo 6 caracteres, mayúsculas automáticas y sin espacios), y capacidades no negativas.
+- **Nueva Subclase `CamionMineria` (`camionmineria.py`):**
+  - Creación de la subclase `CamionMineria` heredando de `Camion`, agregando el atributo validado `tonelaje_maximo` y fijando la tarifa por hora en $100.000.
+- **Actualización y Pruebas en `main.py`:**
+  - Inclusión de suite de pruebas completas para validar captura de excepciones, control de flujo de ingresos/entregas y visualización de tarifas polimórficas.
