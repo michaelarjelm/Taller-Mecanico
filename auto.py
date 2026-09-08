@@ -1,9 +1,27 @@
-from vehiculo import Vehiculo # Importa la clase base Vehiculo desde vehiculo.py
+from vehiculo import Vehiculo
 
-class Auto(Vehiculo): # Define la clase Auto heredando de Vehiculo
-    def __init__(self, patente: str, anio: int, capacidad_maletero: int): # Constructor de Auto que recibe patente, año y capacidad del maletero
-        super().__init__(patente, anio) # Llama al constructor de la clase padre Vehiculo para inicializar patente y año
-        self.__capacidad_maletero: int = capacidad_maletero # Guarda la capacidad del maletero en litros como atributo privado
+class Auto(Vehiculo):
+    """
+    Representa un automóvil en el taller mecánico.
+    """
+    def __init__(self, patente: str, anio: int, capacidad_maletero: int):
+        super().__init__(patente, anio)
+        self.capacidad_maletero = capacidad_maletero  # Valida mediante setter
 
-    def tarifa_hora(self) -> int: # Método que sobrescribe la tarifa por hora para Auto
-        return 25000 # Retorna un valor fijo de 25000 para auto
+    @property
+    def capacidad_maletero(self) -> int:
+        """Getter para la capacidad del maletero en litros."""
+        return self._capacidad_maletero
+
+    @capacidad_maletero.setter
+    def capacidad_maletero(self, valor: int) -> None:
+        """Setter con validación de tipo y rango no negativo."""
+        if not isinstance(valor, int):
+            raise TypeError("La capacidad del maletero debe ser un entero.")
+        if valor < 0:
+            raise ValueError("La capacidad del maletero no puede ser negativa.")
+        self._capacidad_maletero = valor
+
+    def tarifa_hora(self) -> int:
+        """Retorna la tarifa por hora para Auto ($25.000)."""
+        return 25000

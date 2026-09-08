@@ -1,37 +1,78 @@
-class Vehiculo: # Define la clase Vehiculo
-    def __init__(self, patente: str, anio: int): # Constructor que recibe patente y año al crear el objeto
-        self.patente = patente # Asigna la patente mediante el setter para ejecutar la validación
-        self.__anio: int = anio # Asigna el año recibido a un atributo privado
-        self.__en_taller: bool = False # Inicializa el estado en False (no está en el taller por defecto) como privado
+import datetime
+from abc import ABC, abstractmethod
 
-    
+class Vehiculo(ABC):
+    """
+    Clase abstracta base para representar un vehículo en el taller mecánico.
+    Incluye encapsulamiento robusto, validación de datos y control de estado.
+    """
+    def __init__(self, patente: str, anio: int):
+        self.patente = patente  # Asigna usando el setter para ejecutar la validación
+        self.anio = anio        # Asigna usando el setter para ejecutar la validación
+        self._en_taller: bool = False  # Estado privado del vehículo
+
     @property
-    def patente(self) -> str: # Getter que permite acceder a la patente como atributo (vehiculo.patente)
-        return self.__patente # Retorna el valor del atributo privado __patente
+    def patente(self) -> str:
+        """Getter para la patente del vehículo."""
+        return self._patente
 
     @patente.setter
-    def patente(self, valor: str) -> None: # Setter que intercepta las asignaciones para validar la patente
-        if len(valor) < 6 or " " in valor: # Valida que la patente tenga al menos 6 caracteres y sin espacios
-            raise ValueError("La patente debe tener al menos 6 caracteres y no debe contener espacios.") # Lanza error si no es válida
-        self.__patente: str = valor # Asigna el valor validado al atributo privado __patente
+    def patente(self, valor: str) -> None:
+        """Setter con validación de tipo, formato y seguridad para la patente."""
+        if not isinstance(valor, str):
+            raise TypeError("La patente debe ser una cadena de texto (str).")
+        valor_limpio = valor.strip().upper()
+        if len(valor_limpio) < 6 or " " in valor_limpio:
+            raise ValueError("La patente debe tener al menos 6 caracteres y no debe contener espacios.")
+        self._patente = valor_limpio
 
-    def get_patente(self) -> str: # Método alternativo getter tradicional
-        return self.patente # Retorna la patente a través de la propiedad
+    @property
+    def anio(self) -> int:
+        """Getter para el año del vehículo."""
+        return self._anio
 
-    def set_patente(self, valor: str) -> None: # Método alternativo setter tradicional
-        self.patente = valor # Asigna a través del setter de la propiedad con validación
+    @anio.setter
+    def anio(self, valor: int) -> None:
+        """Setter con validación de rango y tipo para el año del vehículo."""
+        if not isinstance(valor, int):
+            raise TypeError("El año debe ser un número entero (int).")
+        anio_actual = datetime.datetime.now().year
+        if valor < 1900 or valor > anio_actual + 1:
+            raise ValueError(f"El año debe estar en un rango válido (entre 1900 y {anio_actual + 1}).")
+        self._anio = valor
 
-    def ingresar(self) -> str: # Método para registrar el ingreso del vehículo al taller
-        if self.__en_taller: # Verifica si el vehículo ya está marcado como dentro del taller
-            return "El vehículo ya se encuentra en el taller." # Devuelve mensaje si ya estaba ingresado
-        self.__en_taller = True # Cambia el estado a True (ingresado)
-        return "El vehículo ha ingresado al taller." # Devuelve mensaje de éxito
+    @property
+    def en_taller(self) -> bool:
+        """Getter para consultar si el vehículo está en el taller."""
+        return self._en_taller
 
-    def entregar(self) -> str: # Método para registrar la salida o entrega del vehículo
-        if not self.__en_taller: # Verifica si el vehículo no está en el taller
-            return "El vehículo no se encuentra en el taller." # Devuelve mensaje indicando que no se puede entregar
-        self.__en_taller = False # Cambia el estado a False (fuera del taller)
-        return "El vehículo ha sido entregado." # Devuelve mensaje de éxito
+    def get_patente(self) -> str:
+        """Método getter tradicional para compatibilidad."""
+        return self.patente
 
-    def tarifa_hora(self) -> int: # Método que retorna el costo de la tarifa por hora
-        return 5000 # Retorna un valor fijo de 5000
+    def set_patente(self, valor: str) -> None:
+        """Método setter tradicional para compatibilidad."""
+        self.patente = valor
+
+    def ingresar(self) -> str:
+        """Registra el ingreso del vehículo al taller."""
+        if self._en_taller:
+            return "El vehículo ya se encuentra en el taller."
+        self._en_taller = True
+        return "El vehículo ha ingresado al taller."
+
+    def entregar(self) -> str:
+        """Registra la salida/entrega del vehículo del taller."""
+        if not self._en_taller:
+            return "El vehículo no se encuentra en el taller."
+        self._en_taller = False
+        return "El vehículo ha sido entregado."
+
+    @abstractmethod
+    def tarifa_hora(self) -> int:
+        """Método abstracto que retorna el costo de la tarifa por hora."""
+        pass
+
+    def __repr__(self) -> str:
+        estado = "En Taller" if self._en_taller else "Fuera del Taller"
+        return f"<{self.__class__.__name__} Patente={self.patente}, Año={self.anio}, Estado={estado}>"
