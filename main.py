@@ -5,58 +5,48 @@ from camion import Camion
 from camionmineria import CamionMineria
 
 def probar_taller():
-    print("=== 1. PRUEBA DE CREACION DE AUTO CON TRY/EXCEPT Y PROPIEDADES VALIDABLES ===")
+    print("=== 1. PRUEBA DE INSTANCIACION Y CONFIGURACION DE PESOS Y VALORES ===")
     
-    # Intento 1: Creación de un Auto con datos inválidos usando try/except
-    print("\n--- Probando creacion de un Auto con datos invalidos (capacidad de maletero negativa: -50) ---")
-    try:
-        # Intenta instanciar un Auto cuya propiedad 'capacidad_maletero' dispara la validación del setter
-        auto_fallido = Auto("AB1234", 2020, -50)
-    except (ValueError, TypeError) as e:
-        # Captura la excepción y muestra un mensaje entendible sin detener la ejecución
-        print(f"[ERROR CAPTURADO] No se pudo crear el vehiculo: {e}")
-        print("[CONTROLADO] La excepcion fue capturada de forma segura. El programa NO exploto y continua su ejecucion normal.\n")
-
-    # Intento 2: Creación del Auto con datos válidos tras haber capturado la falla
-    print("--- Creando el objeto Auto con datos validos ---")
+    # Instanciaciones válidas
     auto = Auto("AB1234", 2018, 200)
-    print(f"[EXITO] Objeto Auto creado correctamente: {auto}")
-
-    print("\n=== 2. OTROS VEHICULOS DEL TALLER ===")
     moto = Moto("CD5678", 2020)
-    camion = Camion("EF9012", 2023, 5000)
-    camion_minero = CamionMineria("MN3344", 2024, 30000, 100)
+    camion = Camion("EF9012", 2023, 8000, 10000)                # Camión convencional (8t carga, 10.000 kg peso)
+    camion_minero = CamionMineria("MN3344", 2024, 40000, 25000, 150) # Camión minería (40t carga, 25.000 kg peso, 150t max)
 
-    print(f"Objeto Moto: {moto}")
-    print(f"Objeto Camion: {camion}")
-    print(f"Objeto Camion Mineria: {camion_minero}")
+    print(f"Objeto Auto:           {auto}")
+    print(f"Objeto Moto:           {moto}")
+    print(f"Objeto Camion:         {camion} | Peso: {camion.peso:,} kg")
+    print(f"Objeto Camion Mineria: {camion_minero} | Peso: {camion_minero.peso:,} kg | Tonelaje Max: {camion_minero.tonelaje_maximo}t")
 
-    print("\n=== 3. PRUEBAS DE CONTROL DE ERRORES ADICIONALES (SETTERS Y PROPIEDADES) ===")
+    print("\n=== 2. PRUEBA DE VALIDACIONES ESPECIFICAS PARA CAMION Y MINERIA (TRY/EXCEPT) ===")
 
-    # Prueba de Patente Inválida capturada en try/except
+    # Prueba 1: Peso inválido en Camión Convencional (<= 0)
     try:
-        auto_patente_corta = Auto("XYZ", 2021, 150)
-    except ValueError as e:
-        print(f"[ERROR EN PATENTE] {e}")
+        camion_peso_invalido = Camion("CC1122", 2021, 5000, 0)
+    except (ValueError, TypeError) as e:
+        print(f"[ERROR CAPTURADO] Peso Camion invalido: {e}")
 
-    # Prueba de Año Fuera de Rango capturada en try/except
+    # Prueba 2: Peso insuficiente en Camión de Minería (< 15.000 kg)
     try:
-        moto_ano_invalido = Moto("AA1122", 2099)
+        minero_peso_liviano = CamionMineria("MIN001", 2022, 10000, 8000, 50)
     except ValueError as e:
-        print(f"[ERROR EN AÑO] {e}")
+        print(f"[ERROR CAPTURADO] Validacion Mineria (Peso insuficiente): {e}")
 
-    print("\n=== 4. PRUEBA DE INGRESO Y SALIDA DEL TALLER ===")
-    print(auto.ingresar())
-    print(auto.ingresar())  # Intento duplicado
-    print(auto.entregar())
+    # Prueba 3: Tonelaje máximo insuficiente en Camión de Minería (< 30 toneladas)
+    try:
+        minero_tonelaje_bajo = CamionMineria("MIN002", 2023, 15000, 20000, 15)
+    except ValueError as e:
+        print(f"[ERROR CAPTURADO] Validacion Mineria (Tonelaje insuficiente): {e}")
 
-    print("\n=== 5. CONFIRMACION DE EJECUCION CONTINUA Y TARIFAS (METODO ABSTRACTO) ===")
-    print(f"Tarifa por hora Auto:           ${auto.tarifa_hora():,}")
-    print(f"Tarifa por hora Moto:           ${moto.tarifa_hora():,}")
-    print(f"Tarifa por hora Camion:         ${camion.tarifa_hora():,}")
-    print(f"Tarifa por hora Camion Mineria: ${camion_minero.tarifa_hora():,}")
+    print("\n=== 3. PRUEBA DE TARIFAS POR HORA Y PRECIO DE TRABAJO (2 HORAS) ===")
+    horas_trabajo = 2
+    print(f"Tarifa por Hora Camion Convencional: ${camion.tarifa_hora():,}")
+    print(f"PRECIO DE TRABAJO TOTAL Camion ({horas_trabajo} hrs): ${camion.precio_trabajo(horas_trabajo):,}")
     
-    print("\n[PROCESO FINALIZADO] ¡El programa continuo y finalizo con exito! Todas las pruebas se ejecutaron sin interrupcion.")
+    print(f"\nTarifa por Hora Camion Mineria:      ${camion_minero.tarifa_hora():,}")
+    print(f"PRECIO DE TRABAJO TOTAL Minero ({horas_trabajo} hrs): ${camion_minero.precio_trabajo(horas_trabajo):,}")
+
+    print("\n[PROCESO FINALIZADO] ¡Se validaron los pesos y precios de trabajo correctamente sin interrumpir el programa!")
 
 if __name__ == "__main__":
     probar_taller()

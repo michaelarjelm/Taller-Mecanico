@@ -56,11 +56,14 @@ Repositorio para la asignatura de Programación Orientada a Objetos Seguro.
 - **Control de Capacidades:** Validaciones en los setters de `capacidad_maletero` y `capacidad_carga` para evitar capacidades negativas.
 - **Control de Estado de Taller:** Creación del getter `en_taller` para consultar el estado del vehículo de forma segura.
 
-#### 4. 🚛 Nueva Subclase `CamionMineria` (`camionmineria.py`)
-- **Herencia Avanzada:** Creación de la subclase `CamionMineria` que hereda de `Camion`.
-- **Atributo Especializado:** Incorporación del atributo `tonelaje_maximo` con validación de valores estrictamente positivos mayores a 0.
-- **Tarifa Especializada:** Implementación del método abstracto `tarifa_hora()` retornando $100.000/hr.
+#### 4. 🚛 Configuración de Pesos y Precios de Trabajo en Camiones
+- **Atributo `peso` en `Camion` (`camion.py`):** Adición de la propiedad validada `peso` (en kg) garantizando valores positivos mayores a 0.
+- **Cálculo de `precio_trabajo()` en `Camion`:** Implementación del método `precio_trabajo(horas: int)` sumando la tarifa por hora multiplicada por las horas trabajadas más un recargo por peso.
+- **Validaciones Especializadas en `CamionMineria` (`camionmineria.py`):**
+  - **Peso Mínimo de Minería:** Validación que exige un peso mínimo de 15.000 kg (15 toneladas) para ser clasificado como camión minero.
+  - **Tonelaje Máximo Mínimo:** Validación que exige al menos 30 toneladas de extracción.
+  - **Precio de Trabajo Minero:** Método `precio_trabajo(horas: int)` ajustado para maquinaria pesada (tarifa horaria de $100.000/hr + recargo por tonelaje de extracción + cargo fijo de operación minera de $150.000).
 
 #### 5. 🧪 Suite de Pruebas Integradas (`main.py`)
-- **Demostración de Polimorfismo:** Ejecución de `tarifa_hora()` para todas las categorías (`Auto`: $25.000, `Moto`: $15.000, `Camion`: $40.000, `CamionMineria`: $100.000).
-- **Pruebas de Captura de Excepciones:** Verificación en bloque `try-except` para control de errores de instanciación abstracta, patentes inválidas, años fuera de rango y tonelajes negativos.
+- **Pruebas en Bloque `try-except`:** Validación de captura de excepciones para peso negativo en camión convencional, peso menor a 15.000 kg en minero y tonelaje menor a 30t en minero.
+- **Demostración de Ejecución Continua:** Confirmación de que el script captura las excepciones sin interrumpir la ejecución y calcula los precios de trabajo totales de 2 horas ($100.000 para camión estándar y $500.000 para camión minero).
