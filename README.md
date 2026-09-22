@@ -54,3 +54,8 @@ Repositorio para la asignatura de Programación Orientada a Objetos Seguro.
 - **Actualización de Script Principal (`main.py`):**
   - Se adaptó el código para probar específicamente la inserción de una `Marca`, demostrando cómo el `id` pasa de `None` a un número válido tras guardar en la base de datos.
   - El código de creación de tablas original fue comentado para que sirva de referencia de estudio a los alumnos.
+
+### 22 de Septiembre de 2026
+- **Documentación Exhaustiva:** Se agregó un comentario explicativo en línea a absolutamente todas las sentencias y declaraciones de código en los paquetes `model` y `dao`, con el fin de facilitar el estudio y comprensión del funcionamiento interno por parte de los alumnos.
+- **Gestión de Ramas (Homologación):** Se fusionaron y homologaron los cambios de la rama de desarrollo hacia la rama principal (`master`).
+- **Publicación:** Publicación de la versión finalizada usando la cuenta autorizada (`michaelarjelm`).
