@@ -2,6 +2,8 @@ import conectar  # Importa el módulo conectar para inicializar la base de datos
 from dao.marca_dao import MarcaDao  # Importa el DAO de marcas
 from model.marca import Marca  # Importa el modelo Marca para instanciar objetos
 import sys
+from servicios.miindicador import MiIndicador
+from model.repuesto import Repuesto
 
 def mostrar_menu():
     print("\n" + "="*30)
@@ -12,7 +14,9 @@ def mostrar_menu():
     print("3. Insertar nueva marca")
     print("4. Actualizar marca existente")
     print("5. Eliminar marca")
-    print("6. Salir")
+    print("6. Obtener valores económicos")
+    print("7. Cotizar repuesto")
+    print("8. Salir")
     print("="*30)
 
 def main():
@@ -29,7 +33,7 @@ def main():
     
     while True:
         mostrar_menu()
-        opcion = input("Seleccione una opción (1-6): ")
+        opcion = input("Seleccione una opción (1-8): ")
         
         if opcion == '1':
             print("\n--- Listado de Marcas ---")
@@ -112,6 +116,50 @@ def main():
                 print("Error: Por favor ingrese un número entero válido.")
                 
         elif opcion == '6':
+            print("\n--- Valores Económicos ---")
+            indicador = MiIndicador()
+            print("Indicadores disponibles comunes: uf, dolar, euro, utm, ipc")
+            codigo = input("Ingrese el código del indicador que desea consultar: ").strip().lower()
+            
+            if codigo:
+                try:
+                    valor = indicador.valor(codigo)
+                    print(f"\nEl valor actual de '{codigo.upper()}' es: ${valor}")
+                except KeyError:
+                    print(f"\nError: No se encontró el indicador '{codigo}'.")
+                except Exception as e:
+                    print(f"\nError al consultar la API: {e}")
+            else:
+                print("Error: El código no puede estar vacío.")
+
+        elif opcion == '7':
+            print("\n--- Cotizar Repuesto ---")
+            try:
+                codigo_rep = input("Ingrese el código del repuesto: ")
+                nombre_rep = input("Ingrese el nombre del repuesto: ")
+                stock_rep = int(input("Ingrese el stock disponible: "))
+                importado_input = input("¿El repuesto es importado? (s/n): ").strip().lower()
+                es_importado = True if importado_input == 's' else False
+                precio_rep = float(input(f"Ingrese el precio en {'dólares' if es_importado else 'pesos'}: "))
+
+                repuesto = Repuesto(codigo_rep, nombre_rep, stock_rep, es_importado, precio_rep)
+
+                # Si es importado, consultar el valor del dólar
+                valor_dolar = 1
+                if es_importado:
+                    print("Consultando el valor actual del dólar...")
+                    indicador = MiIndicador()
+                    valor_dolar = indicador.valor('dolar')
+                
+                precio_final = repuesto.precio_en_pesos(valor_dolar)
+                print(f"\n> El precio final de '{repuesto.nombre}' es: ${precio_final} CLP")
+
+            except ValueError:
+                print("Error: Ingrese valores numéricos válidos para stock y precio.")
+            except Exception as e:
+                print(f"Error al cotizar el repuesto: {e}")
+
+        elif opcion == '8':
             print("\nCerrando el sistema. ¡Hasta luego!")
             conn.close()
             sys.exit(0)
